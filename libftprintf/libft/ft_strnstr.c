@@ -6,12 +6,13 @@
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 12:57:57 by nrasmuss          #+#    #+#             */
-/*   Updated: 2022/05/23 17:58:56 by nickras          ###   ########.fr       */
+/*   Updated: 2022/08/31 12:25:07 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+//if needle in haystack
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
 	size_t	i;
