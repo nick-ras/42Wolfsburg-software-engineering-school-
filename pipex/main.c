@@ -31,34 +31,56 @@ char **commands(char **argv)
 	return (split);
 }
 
-char *get_path_cmd1(char **cmds, char **envp)
+char	**set_paths(char **cmds, char *envp_index)
 {
-	int i;
+	char	*str;
+	char	**path_envp;
+	char	*path1;
+	char **both_paths;
+	int found_first;
 	int j;
-	char **paths;
+	int	first;
+
+	first = 0;
+	j = 0;
+	path_envp = ft_split(envp_index, ':');
+	while (path_envp[j])
+	{
+		if (access(ft_strjoin(path_envp[j], ft_strjoin("/", cmds[0])), R_OK) \
+			== 0 || access(ft_strjoin(path_envp[j], ft_strjoin("/", cmds[2])), \
+			R_OK) == 0)
+		{
+			// To do: free path arrays!
+			if (first == 0)
+			{
+				path1 = ft_strjoin(ft_strjoin(path_envp[j], ft_strjoin("/", cmds[0])), " ");
+					printf("path1: %s\n", path1);
+				first++;
+			}
+			else if (first == 1)
+			{
+				printf("path2: %s\n", ft_strjoin(path_envp[j],	ft_strjoin("/", cmds[2])));
+				return (ft_split(ft_strjoin(path1, ft_strjoin(path_envp[j],	ft_strjoin("/", cmds[2]))), ' '));
+			}
+		}
+		j++;
+	}
+}
+
+char	**get_path1(char **cmds, char **envp)
+{
+	int		i;
 
 	i = 0;
-	j = 0;
 	while (envp[i])
 	{
 		if (ft_strnstr(envp[i], "PATH", ft_strlen(envp[i])))
-		{
-			paths = ft_split(envp[i], ':');
-			while (paths[j])
-			{
-				if (access(ft_strjoin(paths[j], ft_strjoin("/", cmds[0])), R_OK) == 0)
-				{
-					// To do: free path arrays!
-					return (ft_strjoin(paths[j], ft_strjoin("/", cmds[0])));
-				}
-				j++;
-			}
-		}
+			return (set_paths(cmds, envp[i]));
 		i++;
 	}
 }
 
-void execute(char **cmds, char **envp, char *path)
+void execute(char **cmds, char **envp, char **path)
 {
 	char *options[3] = {NULL, NULL, NULL};
 	char *arr[50];
@@ -68,20 +90,20 @@ void execute(char **cmds, char **envp, char *path)
 		options[0] = cmds[0];
 		if (cmds[1])
 			options[1] = cmds[1];
-		if (execve(path, options, envp) == -1)
+		if (execve(path[0], options, envp) == -1)
 		{
-			perror(ft_strjoin(path, ft_strjoin("/", cmds[1])));
+			perror(ft_strjoin(path[0], ft_strjoin("/", cmds[1])));
 			exit(1);
 		}
 		else
-			execve(path, options, envp);
+			execve(path[0], options, envp);
 	}
 }
 
 
 int main(int argc, char **argv, char **envp)
 {
-	char *path1;
+	char **paths;
 	char **cmds;
 	char *buffer[400];
 	pid_t pid1;
@@ -97,10 +119,8 @@ int main(int argc, char **argv, char **envp)
 
 
 
-
-
-
-	path1 = get_path_cmd1(cmds, envp); // gets full path of ls program
+	paths = get_path1(cmds, envp); // gets full path of cmd1 program
+	printf("%s\n%s\n", paths[0], paths[1]);
 	if (pipe(pipefd) == -1) // Create a pipe and error check
 		return (1);
 
@@ -133,7 +153,7 @@ int main(int argc, char **argv, char **envp)
 		}
 		close(pipefd[0]);
 		close(pipefd[1]);						// Done writing, close pipe's write end.
-		execute(cmds, envp, path1); // child proces is replaced by execve output
+		//execute(cmds, envp, paths); // child proces is replaced by execve output
 	}
 
 	int pid2 = fork();
@@ -141,7 +161,7 @@ int main(int argc, char **argv, char **envp)
 		return (3);
 	if (pid2 == 0)
 	{
-		execute2(cmds, envp, path1);
+		//execute2(cmds, envp, path1);
 		//use execve again
 		// use file2 and cm2 on stdin?
 		close(pipefd[0]);
