@@ -6,7 +6,7 @@
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 14:20:21 by nickras           #+#    #+#             */
-/*   Updated: 2022/05/27 13:29:09 by nickras          ###   ########.fr       */
+/*   Updated: 2022/09/01 14:35:01 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ static char	**create_substrings(char const *s, char	**str2d, char c)
 	return (str2d);
 }
 
+//string and delimiter (c)
 char	**ft_split(char const *s, char c)
 {
 	char	**str2d;

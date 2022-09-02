@@ -10,6 +10,8 @@
 #include "../libftprintf/ft_printf.h"
 #include <sys/types.h>
 #include <sys/wait.h>
+#define READ 0
+#define WRITE 1
 
 char **commands(char **argv)
 {
@@ -106,28 +108,32 @@ int main(int argc, char **argv, char **envp)
 	pid_t pid1;
 	int pipefd[2];
 	int reader;
+	int fd[2];
 
 	cmds = commands(argv);
 	if (!envp)
 	{
-		ft_printf("could not find envp!\n");
-		exit(1);
+		perror("could not find envp!\n");
+		exit(2);
 	}
-
 
 
 	paths = get_path1(cmds, envp); // gets full path of cmd1 program
 	printf("paths: %s     %s\n", paths[0], paths[1]);
+
+
+
+	fd[READ] = open(argv[1], O_RDONLY); //not the pipe!
+	fd[WRITE] = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 744);
+	if (fd[READ] < 0 || fd[WRITE] < 0)
+	{
+		perror("open doesnt work");
+		return (-1);
+	}
+
+
 	if (pipe(pipefd) == -1) // Create a pipe and error check
 		return (1);
-
-
-
-	pipefd[0] = open(argv[1], O_RDONLY);
-	pipefd[1] = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 744);
-	if (pipefd[0] < 0 || pipefd[1] < 0)
-		return (-1);
-
 
 	pid1 = fork();
 	if (pid1 == -1)
@@ -135,50 +141,57 @@ int main(int argc, char **argv, char **envp)
 		perror("fork function error\n"); // will also print errno
 		exit(1);
 	}
-	else if (pid1 == 0)-----------------------------------------------
+	if (pid1 == 0)//-----------------------------------------------
 	{
 		//cmd1 will be executed by the child and save in pipfd[0]
 		if (dup2(pipefd[1], STDOUT_FILENO) < 0 \
-		|| dup2(pipefd[0], STDIN_FILENO) < 0) //infile becomes stdin
+		|| dup2(fd[0], STDIN_FILENO) < 0) //infile becomes stdin
 		{
 			ft_printf("dup error\n"),
 			exit(1);
 		}
 		close(pipefd[0]);
-		close(pipefd[1]);						// Done writing, close pipe's write end.
-		execute(cmds[0], cmds[1], envp, paths[0]); // child proces is replaced by execve output
-	}
-
-	int pid2 = fork();
-	if (pid2 == - 1)
-	{
-		ft_printf("fork error\n");
-		return (3);
-	}
-	if (pid2 == 0)//----------------------------------------------------In the parent process, we want end[0] to be our stdin (end[0] reads from end[1] the output of cmd1), and outfile to be our stdout
-	{
-		wait(NULL);
-		dup2(STDIN_FILENO, ends[0]), //output of exec becomes ends[0]
-		dup2(pipefd[1], STDOUT_FILENO); //outfile is stdout, which after next line will be output of exec
-		execute(cmds[2], cmds[3], envp, paths[1]);
-		close(pipefd[0]);
+		close(fd[1]);						// Done writing, close pipe's write end.
 		close(pipefd[1]);
+		close(fd[0]);
+		execute(cmds[0], cmds[1], envp, paths[0]); // child proces is replaced by execve output
+		ft_printf("second  didnt exec\n");
+		return (0);
 	}
+	else
+	{               //second fork
+		int	pid2 = fork(); 
+		if (pid2 == - 1)
+		{
+			ft_printf("fork error\n");
+			return (3);
+		}
+		if (pid2 == 0)		//--------------------------------In the parent process, we want end[0] to be our stdin (end[0] reads from end[1] the output of cmd1), and outfile to be our stdout
+		{
+			if (dup2(pipefd[READ], STDIN_FILENO) < 0 \
+			|| dup2(fd[WRITE], STDOUT_FILENO) < 0) //infile becomes stdin
+			{
+				ft_printf("dup error\n"),
+				exit(1);
+			}
+			close(pipefd[0]);
+			close(fd[1]);						// Done writing, close pipe's write end.
+			close(pipefd[1]);
+			close(fd[0]);
+			execute(cmds[2], cmds[3], envp, paths[1]);
+			ft_printf("second  didnt exec\n");
+			return (0);
+		}
+		else
+		{ //IN PARENT
+			waitpid(pid1, NULL, 0); // Wait for child.
+			waitpid(pid2, NULL, 0); // Wait for child.
 
-	// IN PARENT
-	waitpid(pid1, NULL, 0); // Wait for child.
-	waitpid(pid2, NULL, 0); // Wait for child.
-
-	reader = read(0, buffer, 5);//read from stdin? which is same as stdout
-	if (reader == -1)
-	{
-		ft_printf("read error\n");
-		return (3);
+			close(pipefd[0]);			// Read everything, close pipe's readend.
+			close(pipefd[1]);			// Nothing to write, close pipe's writeend.
+			close(fd[0]);	
+			close(fd[1]);
+			return (0);
+		}
 	}
-	buffer[reader] = '\0';
-
-	close(pipefd[0]);					// Read everything, close pipe's read end.
-	close(pipefd[1]);					// Nothing to write, close pipe's write end.
-	printf("%s\"\n", buffer); // prints output
-	return (0);
 }
