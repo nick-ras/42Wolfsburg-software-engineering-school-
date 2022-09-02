@@ -54,12 +54,10 @@ char	**set_paths(char **cmds, char *envp_index)
 			if (first == 0)
 			{
 				path1 = ft_strjoin(ft_strjoin(path_envp[j], ft_strjoin("/", cmds[0])), " ");
-					printf("path1: %s\n", path1);
 				first++;
 			}
 			else if (first == 1)
 			{
-				printf("path2: %s\n", ft_strjoin(path_envp[j],	ft_strjoin("/", cmds[2])));
 				return (ft_split(ft_strjoin(path1, ft_strjoin(path_envp[j],	ft_strjoin("/", cmds[2]))), ' '));
 			}
 		}
@@ -80,23 +78,22 @@ char	**get_path1(char **cmds, char **envp)
 	}
 }
 
-void execute(char **cmds, char **envp, char **path)
+void execute(char *cmd, char *argument, char **envp, char *path)
 {
 	char *options[3] = {NULL, NULL, NULL};
 	char *arr[50];
 
-	if (ft_strncmp(cmds[0], "ls", ft_strlen("ls")) == 0)
+	if (ft_strncmp(cmd, "ls", ft_strlen("ls")) == 0)
 	{
-		options[0] = cmds[0];
-		if (cmds[1])
-			options[1] = cmds[1];
-		if (execve(path[0], options, envp) == -1)
+		options[0] = cmd;
+		options[1] = argument;
+		if (execve(path, options, envp) == -1)
 		{
-			perror(ft_strjoin(path[0], ft_strjoin("/", cmds[1])));
+			perror(ft_strjoin(path, ft_strjoin("/", cmd)));
 			exit(1);
 		}
 		else
-			execve(path[0], options, envp);
+			execve(path, options, envp);
 	}
 }
 
@@ -120,7 +117,7 @@ int main(int argc, char **argv, char **envp)
 
 
 	paths = get_path1(cmds, envp); // gets full path of cmd1 program
-	printf("%s\n%s\n", paths[0], paths[1]);
+	printf("paths: %s     %s\n", paths[0], paths[1]);
 	if (pipe(pipefd) == -1) // Create a pipe and error check
 		return (1);
 
@@ -138,63 +135,50 @@ int main(int argc, char **argv, char **envp)
 		perror("fork function error\n"); // will also print errno
 		exit(1);
 	}
-	else if (pid1 == 0)
+	else if (pid1 == 0)-----------------------------------------------
 	{
 		//cmd1 will be executed by the child and save in pipfd[0]
-		if(dup2(pipefd[0], STDIN_FILENO) < 0) //infile becomes stdin
+		if (dup2(pipefd[1], STDOUT_FILENO) < 0 \
+		|| dup2(pipefd[0], STDIN_FILENO) < 0) //infile becomes stdin
 		{
-			perror("dup2\n");
-			exit(1);
-		}
-		if(dup2(pipefd[1], STDOUT_FILENO) < 0) //infile becomes stdin
-		{
-			perror("dup2\n");
+			ft_printf("dup error\n"),
 			exit(1);
 		}
 		close(pipefd[0]);
 		close(pipefd[1]);						// Done writing, close pipe's write end.
-		//execute(cmds, envp, paths); // child proces is replaced by execve output
+		execute(cmds[0], cmds[1], envp, paths[0]); // child proces is replaced by execve output
 	}
 
 	int pid2 = fork();
-	if (pid2 = 0 - 1)
-		return (3);
-	if (pid2 == 0)
+	if (pid2 == - 1)
 	{
-		//execute2(cmds, envp, path1);
-		//use execve again
-		// use file2 and cm2 on stdin?
+		ft_printf("fork error\n");
+		return (3);
+	}
+	if (pid2 == 0)//----------------------------------------------------In the parent process, we want end[0] to be our stdin (end[0] reads from end[1] the output of cmd1), and outfile to be our stdout
+	{
+		wait(NULL);
+		dup2(STDIN_FILENO, ends[0]), //output of exec becomes ends[0]
+		dup2(pipefd[1], STDOUT_FILENO); //outfile is stdout, which after next line will be output of exec
+		execute(cmds[2], cmds[3], envp, paths[1]);
 		close(pipefd[0]);
 		close(pipefd[1]);
 	}
 
-	// PARENT
+	// IN PARENT
 	waitpid(pid1, NULL, 0); // Wait for child.
-	// waitpid(pid2, NULL, 0); // Wait for child.
-	//execute cmd2 in parent
+	waitpid(pid2, NULL, 0); // Wait for child.
 
-	reader = read(pipefd[0], buffer, 5);//SET RIGHT AMOUNT OF BYTES
+	reader = read(0, buffer, 5);//read from stdin? which is same as stdout
 	if (reader == -1)
+	{
+		ft_printf("read error\n");
 		return (3);
+	}
 	buffer[reader] = '\0';
-
-
 
 	close(pipefd[0]);					// Read everything, close pipe's read end.
 	close(pipefd[1]);					// Nothing to write, close pipe's write end.
 	printf("%s\"\n", buffer); // prints output
 	return (0);
 }
-
-// test evey folder using access
-
-// for (char **env = envp; *env != 0; env++)
-//   {
-//     char *thisEnv = *env;
-//     printf("%s\n", thisEnv);
-//   }
-//   return 0;
-// PATH
-// if ( == -1)
-// 	write(1, "error\n", 6);
-// ft_strnstr
