@@ -90,9 +90,8 @@ void execute(char **commands, char **envp, char *path)
 	printf("check path before execve  %s and option 1   %s and options 2   %s \n", path, options[0], options[1]);
 	if (execve(path, options, envp) == -1)
 	{
-		perror(ft_strjoin(path, ft_strjoin("/", cmd)));
+		perror(path);
 		exit(1);
-	}
 	}
 }
 
@@ -113,9 +112,8 @@ int main(int argc, char **argv, char **envp)
 		perror("could not find envp!\n");
 		exit(2);
 	}
-
-
-	paths = get_path1(cmds, envp); // gets full path of cmd1 program
+ //TO DO FEED IT COMMAND
+	paths = get_path1(ft_split(argv[2])[0]), envp); // gets full path of cmd1 program
 	printf("paths: %s   second  %s\n", paths[0], paths[1]);
 
 	fd[READ] = open(argv[1], O_RDONLY); //not the pipe!
