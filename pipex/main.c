@@ -48,23 +48,21 @@ char	**set_paths(char **cmds, char *envp_index)
 	path_envp = ft_split(envp_index, ':');
 	while (path_envp[j])
 	{
-		if (access(ft_strjoin(path_envp[j], ft_strjoin("/", cmds[0])), R_OK) \
-			== 0 || access(ft_strjoin(path_envp[j], ft_strjoin("/", cmds[2])), \
-			R_OK) == 0)
+		//|| access(ft_strjoin(path_envp[j], ft_strjoin("/", cmds[2])), \
+			R_OK) == 0
+		int the_path = access(ft_strjoin(path_envp[j], ft_strjoin("/", cmds[0])), R_OK);
+		if (the_path == 0 && first == 0)
 		{
 			// To do: free path arrays!
-			if (first == 0)
-			{
-				path1 = ft_strjoin(ft_strjoin(path_envp[j], ft_strjoin("/", cmds[0])), " ");
-				first++;
+			path1 = ft_strjoin(ft_strjoin(path_envp[j], ft_strjoin("/", cmds[0])), " ");
+				first = 1;
 			}
-			else if (first == 1)
+			else if (the_path == 0 && first == 1)
 			{
 				return (ft_split(ft_strjoin(path1, ft_strjoin(path_envp[j],	ft_strjoin("/", cmds[2]))), ' '));
 			}
 		}
 		j++;
-	}
 }
 
 char	**get_path1(char **cmds, char **envp)
@@ -89,13 +87,12 @@ void execute(char *cmd, char *argument, char **envp, char *path)
 	{
 		options[0] = cmd;
 		options[1] = argument;
+		// printf()
 		if (execve(path, options, envp) == -1)
 		{
 			perror(ft_strjoin(path, ft_strjoin("/", cmd)));
 			exit(1);
 		}
-		else
-			execve(path, options, envp);
 	}
 }
 
@@ -119,7 +116,7 @@ int main(int argc, char **argv, char **envp)
 
 
 	paths = get_path1(cmds, envp); // gets full path of cmd1 program
-	printf("paths: %s     %s\n", paths[0], paths[1]);
+	printf("paths: %s   second  %s\n", paths[0], paths[1]);
 
 
 
@@ -174,6 +171,7 @@ int main(int argc, char **argv, char **envp)
 				ft_printf("dup error\n"),
 				exit(1);
 			}
+			printf("cmds2  %s cmds3  %s  paths1  %s\n", cmds[2], cmds[3], paths[1]);
 			close(pipefd[0]);
 			close(fd[1]);						// Done writing, close pipe's write end.
 			close(pipefd[1]);
