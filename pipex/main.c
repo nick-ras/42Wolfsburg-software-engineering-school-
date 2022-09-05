@@ -32,160 +32,175 @@ char **commands(char **argv)
 	return (split);
 }
 
-char	**set_paths(char **cmds, char *envp_index)
+void	free_list(char **path_envp)
 {
-	char	*str;
-	char	**path_envp;
-	char	*path1;
-	char **both_paths;
-	int found_first;
-	int j;
-	int	first;
-	int the_path = 0;
-
-	first = 0;
-	j = 0;
-	path_envp = ft_split(envp_index, ':');
-	while (path_envp[j])
-	{
-		//|| access(ft_strjoin(path_envp[j], ft_strjoin("/", cmds[2])), \
-			R_OK) == 0
-		the_path = access(ft_strjoin(path_envp[j], ft_strjoin("/", cmds[0])), R_OK);
-		if (the_path == 0 && first == 0)
-		{
-			// To do: free path arrays!
-			path1 = ft_strjoin(ft_strjoin(path_envp[j], ft_strjoin("/", cmds[2])), " ");
-				first = 1;
-			}
-			else if (the_path == 1 && first == 1)
-			{
-				return (ft_split(ft_strjoin(path1, ft_strjoin(path_envp[j],	ft_strjoin("/", cmds[2]))), ' '));
-			}
-		}
-		j++;
-}
-
-char	**get_path1(char **cmds, char **envp)
-{
-	int		i;
+	int i;
 
 	i = 0;
-	while (envp[i])
+	while (path_envp[i])
 	{
-		if (ft_strnstr(envp[i], "PATH", ft_strlen(envp[i])))
-			return (set_paths(cmds, envp[i]));
+		free(path_envp[i]);
+		path_envp[i] == NULL;
 		i++;
 	}
 }
 
-void execute(char **commands, char **envp, char *path)
+char	*set_paths(char *cmd, char *argument, char *envp_index)
 {
-	char *options[3] = {NULL, NULL, NULL};
-	char *arr[50];
+	char	**path_envp;
+	char *working_path;
+	int j;
+	int the_path = -1;
+	char	*addon;
 
-	
-	options[0] = commands[0];
-	if (commands[1])
-		options[1] = commands[1];
-	printf("check path before execve  %s and option 1   %s and options 2   %s \n", path, options[0], options[1]);
-	if (execve(path, options, envp) == -1)
+	j = 0;
+	path_envp = ft_split(envp_index, ':');
+	addon = ft_strjoin("/", cmd);
+	while (path_envp[j])
 	{
-		perror(path);
-		exit(1);
+		the_path = access(ft_strjoin(path_envp[j], addon), R_OK);
+		if (the_path == 0)
+		{
+			working_path = ft_strjoin(path_envp[j], addon);
+			free_list(path_envp);
+			free(addon);
+			free (argument);
+			free(cmd);
+			return (working_path);
+		}
+		j++;
 	}
 }
 
-
-int main(int argc, char **argv, char **envp)
+char	*get_path(char *cmd, char **envp)
 {
-	char **paths;
-	//char **cmds;
-	char *buffer[400];
-	pid_t pid1;
-	int pipefd[2];
-	int reader;
-	int fd[2];
+	int		i;
+	char **split_cmd;
 
-	//cmds = commands(argv);
+	if (ft_strnstr(cmd, " ", ft_strlen(cmd)))
+		split_cmd = ft_split(cmd, ' ');
+	ft_printf("cmd: %s\n ", cmd);
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strnstr(envp[i], "PATH", ft_strlen(envp[i])))
+		{
+			// ft_printf("print whole envp-> %s\n", envp[i]);
+			if (ft_strnstr(cmd, " ", ft_strlen(cmd)))
+				return (set_paths(split_cmd[0], split_cmd[1], envp[i]));
+			else
+				return (set_paths(cmd, NULL, envp[i]));
+		}
+		i++;
+	}
+}
+
+void	execute(char *cmd, char **envp, char *path)
+{
+	char	*options[3] = {NULL, NULL, NULL};
+	char	*arr[50];
+	char	**split_cmd;
+
+	if (ft_strnstr(cmd, " ", ft_strlen(cmd)))
+	{
+		split_cmd = ft_split(cmd, ' ');
+		options[0] = split_cmd[0];
+		options[1] = split_cmd[1];
+	}
+	else
+		options[0] = cmd;
+	//printf("execve path%s\n and option 1 	%s\n and options 2   %s \n", path, options[0], options[1]);
+	if (execve(path, options, envp) == -1)
+	{
+		free_list(split_cmd);
+		perror(path);
+		exit(1);
+	}
+	else
+		free_list(split_cmd);
+}
+
+
+int	main(int argc, char **argv, char **envp)
+{
+	char	*path;
+	char *path2;
+	pid_t	pid1;
+	pid_t	pid2;
+	int		fd[2];
+	int		pipefd[2];
+
 	if (!envp)
 	{
 		perror("could not find envp!\n");
 		exit(2);
 	}
  //TO DO FEED IT COMMAND
-	paths = get_path1(ft_split(argv[2])[0]), envp); // gets full path of cmd1 program
-	printf("paths: %s   second  %s\n", paths[0], paths[1]);
+	path = get_path(argv[2], envp);
+	path2 = get_path(argv[3], envp);
+	printf("path: %s  \n", path);
 
-	fd[READ] = open(argv[1], O_RDONLY); //not the pipe!
+	fd[READ] = open(argv[1], O_RDONLY);
 	fd[WRITE] = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 744);
 	if (fd[READ] < 0 || fd[WRITE] < 0)
 	{
 		perror("open doesnt work");
 		return (-1);
 	}
-
-
-	if (pipe(pipefd) == -1) // Create a pipe and error check
+	if (pipe(pipefd) == -1) //CREATE PIPE
 		return (1);
-
 	pid1 = fork();
 	if (pid1 == -1)
 	{
-		perror("fork function error\n"); // will also print errno
+		perror("fork function error\n");
 		exit(1);
 	}
-	if (pid1 == 0)//-----------------------------------------------
+	if (pid1 == 0)
 	{
-		//cmd1 will be executed by the child and save in pipfd[0]
-		if (dup2(pipefd[1], STDOUT_FILENO) < 0 \
-		|| dup2(fd[0], STDIN_FILENO) < 0) //infile becomes stdin
+		ft_printf("BEFORE EXECVE 1\n");
+		close(pipefd[0]);
+		close(fd[1]);
+		if (dup2(fd[READ], STDIN_FILENO) < 0 || \
+		dup2(pipefd[WRITE], STDOUT_FILENO) < 0)
 		{
 			ft_printf("dup error\n"),
 			exit(1);
 		}
-		close(pipefd[0]);
-		close(fd[1]);						// Done writing, close pipe's write end.
 		close(pipefd[1]);
 		close(fd[0]);
-		execute(ft_split(argv[2], ' '), envp, paths[0]); // child proces is replaced by execve output
+		execute(argv[2], envp, path);
 		ft_printf("second  didnt exec\n");
 		return (0);
 	}
 	else
-	{               //second fork
-		int	pid2 = fork(); 
-		if (pid2 == - 1)
+	{
+		waitpid(pid1, NULL, 0);
+		close(fd[0]);
+		close(pipefd[1]);
+		pid2 = fork();
+		if (pid2 == -1)
 		{
 			ft_printf("fork error\n");
 			return (3);
 		}
-		if (pid2 == 0)		//--------------------------------In the parent process, we want end[0] to be our stdin (end[0] reads from end[1] the output of cmd1), and outfile to be our stdout
+		if (pid2 == 0)
 		{
+			close(pipefd[1]);
+			close(fd[0]);
 			if (dup2(pipefd[READ], STDIN_FILENO) < 0 \
-			|| dup2(fd[WRITE], STDOUT_FILENO) < 0) //infile becomes stdin
+			|| dup2(fd[WRITE], STDOUT_FILENO) < 0)
 			{
 				ft_printf("dup error\n"),
 				exit(1);
 			}
-			printf("cmds2  %s cmds3  %s  paths1  %s\n", cmds[2], cmds[3], paths[1]);
 			close(pipefd[0]);
-			close(fd[1]);						// Done writing, close pipe's write end.
-			close(pipefd[1]);
-			close(fd[0]);
-			execute(ft_split(argv[3], ' '), envp, paths[1]);
-			ft_printf("second  didnt exec\n");
-			return (0);
-		}
-		else
-		{ //IN PARENT
-			waitpid(pid1, NULL, 0); // Wait for child.
-			waitpid(pid2, NULL, 0); // Wait for child.
-
-			close(pipefd[0]);			// Read everything, close pipe's readend.
-			close(pipefd[1]);			// Nothing to write, close pipe's writeend.
-			close(fd[0]);	
 			close(fd[1]);
-			return (0);
+			execute(argv[3], envp, path2);
+			ft_printf("second  didnt exec\n");
 		}
+		waitpid(pid2, NULL, 0);
+		close(pipefd[0]);
+		close(fd[1]);
+		return (0);
 	}
 }
