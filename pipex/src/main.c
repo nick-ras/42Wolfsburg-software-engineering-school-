@@ -25,6 +25,7 @@ void	free_list(char **path_envp)
 		path_envp[i] = NULL;
 		i++;
 	}
+	free(path_envp);
 }
 
 char	*cmd_get_command(char *cmd)
@@ -87,13 +88,17 @@ char	*set_paths(char *cmd, char *envp_index)
 	{
 		free_list(path_envp);
 		free(addon);
-		if (ft_strnstr(cmd, " ", ft_strlen(cmd)))
+		if (!ft_strnstr(cmd, " ", ft_strlen(cmd)))
 			free(cmd);
 		perror("enter valid command");
 		exit (2);
 	}
 	else
+	{
+		if (!ft_strnstr(cmd, " ", ft_strlen(cmd)))
+			free(cmd);
 		return (path);
+	}
 }
 
 char	*get_path(char *cmd, char **envp)
