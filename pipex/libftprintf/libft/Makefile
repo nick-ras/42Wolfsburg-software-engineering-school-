@@ -6,7 +6,7 @@
 #    By: nickras <nickras@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/09 12:52:06 by nickras           #+#    #+#              #
-#    Updated: 2022/09/06 17:38:05 by nickras          ###   ########.fr        #
+#    Updated: 2022/09/06 18:26:33 by nickras          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,11 +31,11 @@ OBJSBONUS =      $(SRCBONUS:.c=.o) $(SRC:.c=.o)
 $(NAMELIB): $(OBJS)
 	ar rcs $(NAMELIB) $(OBJS)
 	
-all: @$(NAMELIB)
+all: $(NAMELIB)
 
 
 bonus: $(NAMELIB) $(OBJSBONUS)
-	@ar rcs $(NAMELIB) $(OBJSBONUS)
+	ar rcs $(NAMELIB) $(OBJSBONUS)
 	
 clean:
 	$(RM) $(OBJSBONUS)

@@ -39,10 +39,10 @@ fclean: clean
 	@$(MAKE) fclean -C ../libftprintf
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
-	@$(MAKE) all -C ../libftprintf
+	@$(MAKE) all -C ./libftprintf
 	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) -o $@ -c $^
-	
+
 #-p will print rules and variable values
 #^ is all prereq and < is first prereq
 # if several prerequities, the first depends on date on the second, and if the first is older, the instructions below will be executed. The default value for .LIBPATTERNS is ‘lib%.so lib%.a’
