@@ -6,11 +6,11 @@
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 18:05:22 by nickras           #+#    #+#             */
-/*   Updated: 2022/09/06 18:05:32 by nickras          ###   ########.fr       */
+/*   Updated: 2022/09/06 18:19:08 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "/home/nickras/42/pipex/ft_pipex.h"
+#include "../pipex.h"
 
 char	*make_path_executable(char **path_envp, char *addon, \
 char *cmd, char *path)

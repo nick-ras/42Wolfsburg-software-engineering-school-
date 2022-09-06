@@ -6,12 +6,12 @@
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 13:20:56 by nickras           #+#    #+#             */
-/*   Updated: 2022/09/06 18:07:18 by nickras          ###   ########.fr       */
+/*   Updated: 2022/09/06 18:16:56 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PIPEX_H
-# define FT_PIPEX_H
+#ifndef PIPEX_H
+# define PIPEX_H
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -19,7 +19,7 @@
 # include <stddef.h>
 # include <errno.h>
 # include <fcntl.h>
-# include "../libftprintf/ft_printf.h"
+# include "./libftprintf/ft_printf.h"
 # include <sys/types.h>
 # include <sys/wait.h>
 # define READ 0

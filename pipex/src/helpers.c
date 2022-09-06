@@ -6,11 +6,11 @@
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 18:04:48 by nickras           #+#    #+#             */
-/*   Updated: 2022/09/06 18:06:41 by nickras          ###   ########.fr       */
+/*   Updated: 2022/09/06 18:19:04 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "/home/nickras/42/pipex/ft_pipex.h"
+#include "../pipex.h"
 
 void	early_errors(int argc, char **envp)
 {

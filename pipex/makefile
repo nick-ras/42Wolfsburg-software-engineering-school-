@@ -27,13 +27,7 @@ OBJ			= $(addprefix $(OBJ_DIR),$(OBJ_FILES))
 #prefix adds will result in ./src/main.c (and same for all other files in src)
 
 $(NAME): $(OBJ) $(LIBFTPRINTF_A)
-	@$(CC) -o $(NAME) $^
-
-#targets : prerequisites
-#	      instructions
-## i gcc OBJ_FILES because it has all files in right
-# linking, you can give it the path -L or -lft if starting with ft, or just add archive in gcc
-#i could make  $(LIBFTPRINTF_A) but would have to actively compile it for it to cound be a rule(doing smth)
+	$(CC) -o $(NAME) $^
 
 all: $(NAME)
 
@@ -48,6 +42,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@$(MAKE) all -C ../libftprintf
 	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) -o $@ -c $^
+	
 #-p will print rules and variable values
 #^ is all prereq and < is first prereq
 # if several prerequities, the first depends on date on the second, and if the first is older, the instructions below will be executed. The default value for .LIBPATTERNS is ‘lib%.so lib%.a’

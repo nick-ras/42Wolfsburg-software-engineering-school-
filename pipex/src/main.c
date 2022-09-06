@@ -6,14 +6,14 @@
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 18:04:56 by nickras           #+#    #+#             */
-/*   Updated: 2022/09/06 18:06:27 by nickras          ###   ########.fr       */
+/*   Updated: 2022/09/06 18:18:24 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // gcc -Wextra -Werror main.c ../libftprintf/libftprintf.a && ./a.out ls
 //make re && ./pipex infile "cat -e" "grep 3" outfile
 
-#include "/home/nickras/42/pipex/ft_pipex.h"
+#include "../pipex.h"
 
 void	execute(char *cmd, char **envp, char *path)
 {

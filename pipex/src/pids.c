@@ -6,11 +6,11 @@
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 18:05:56 by nickras           #+#    #+#             */
-/*   Updated: 2022/09/06 18:06:34 by nickras          ###   ########.fr       */
+/*   Updated: 2022/09/06 18:19:11 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "/home/nickras/42/pipex/ft_pipex.h"
+#include "../pipex.h"
 
 void	pid1_is_0(int *fd, int *pipefd, char *cmd, char **envp)
 {
