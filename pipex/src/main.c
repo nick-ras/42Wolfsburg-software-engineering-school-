@@ -6,7 +6,7 @@
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 18:04:56 by nickras           #+#    #+#             */
-/*   Updated: 2022/09/07 13:52:46 by nickras          ###   ########.fr       */
+/*   Updated: 2022/09/07 17:09:14 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ int	main(int argc, char **argv, char **envp)
 		pid1_is_0(fd, pipefd, argv[2], envp);
 	else
 	{
+		int	status;
+		waitpid(pid1, &status, 0);
 		pid2 = fork();
 		pid_minus_one(pid2);
 		if (pid2 == 0)

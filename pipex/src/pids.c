@@ -6,7 +6,7 @@
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 18:05:56 by nickras           #+#    #+#             */
-/*   Updated: 2022/09/07 12:40:00 by nickras          ###   ########.fr       */
+/*   Updated: 2022/09/07 17:00:43 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	pid1_is_0(int *fd, int *pipefd, char *cmd, char **envp)
 void	pid2_is_0(int *fd, int *pipefd, char *argv, char **envp)
 {
 	char	*path;
-
 	path = get_path(argv, envp);
 	close(pipefd[WRITE]);
 	close(fd[READ]);
