@@ -36,7 +36,7 @@ clean:
 
 fclean: clean
 	@$(RM) $(NAME)
-	@$(MAKE) fclean -C ../libftprintf
+	@$(MAKE) fclean -C ./libftprintf
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@$(MAKE) all -C ./libftprintf

@@ -6,7 +6,7 @@
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 18:05:56 by nickras           #+#    #+#             */
-/*   Updated: 2022/09/06 18:19:11 by nickras          ###   ########.fr       */
+/*   Updated: 2022/09/07 12:40:00 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ void	pid1_is_0(int *fd, int *pipefd, char *cmd, char **envp)
 	ft_printf("first didnt exec\n");
 }
 
-void	pid2_is_0(int *fd, int *pipefd, char *cmd, char **envp)
+void	pid2_is_0(int *fd, int *pipefd, char *argv, char **envp)
 {
 	char	*path;
 
-	path = get_path(cmd, envp);
+	path = get_path(argv, envp);
 	close(pipefd[WRITE]);
 	close(fd[READ]);
 	if (dup2(pipefd[READ], STDIN_FILENO) < 0 \
@@ -47,7 +47,7 @@ void	pid2_is_0(int *fd, int *pipefd, char *cmd, char **envp)
 	close(fd[WRITE]);
 	close(pipefd[READ]);
 	path = NULL;
-	path = get_path(cmd, envp);
-	execute(cmd, envp, path);
+	path = get_path(argv, envp);
+	execute(argv, envp, path);
 	ft_printf("second  didnt exec\n");
 }
