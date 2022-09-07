@@ -6,7 +6,7 @@
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 18:04:56 by nickras           #+#    #+#             */
-/*   Updated: 2022/09/07 13:45:13 by nickras          ###   ########.fr       */
+/*   Updated: 2022/09/07 13:52:46 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	execute(char *cmd, char **envp, char *path)
 	else
 		free_list(split_cmd);
 }
+
 
 void	free_list(char **path_envp)
 {
