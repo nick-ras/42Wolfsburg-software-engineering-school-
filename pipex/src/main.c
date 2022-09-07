@@ -6,7 +6,7 @@
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 18:04:56 by nickras           #+#    #+#             */
-/*   Updated: 2022/09/07 17:09:14 by nickras          ###   ########.fr       */
+/*   Updated: 2022/09/07 18:14:00 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,11 @@ int	main(int argc, char **argv, char **envp)
 	fd[READ] = open(argv[1], O_RDONLY);
 	fd[WRITE] = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 744);
 	if (fd[READ] < 0 || fd[WRITE] < 0)
-		open_is_minus_one();
+		open_is_minus_one(fd);
 	if (pipe(pipefd) == -1)
-		return (1);
+		pipe_is_minus_one(fd);
 	pid1 = fork();
-	pid_minus_one(pid1);
+	pid_minus_one(fd, pipefd);
 	if (pid1 == 0)
 		pid1_is_0(fd, pipefd, argv[2], envp);
 	else
@@ -80,7 +80,8 @@ int	main(int argc, char **argv, char **envp)
 		int	status;
 		waitpid(pid1, &status, 0);
 		pid2 = fork();
-		pid_minus_one(pid2);
+		if (pid2 == -1)
+			pid_minus_one(fd, pipefd);
 		if (pid2 == 0)
 			pid2_is_0(fd, pipefd, argv[3], envp);
 		close_fds_wait_exit(fd, pipefd, pid1, pid2);

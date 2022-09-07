@@ -6,7 +6,7 @@
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 18:04:48 by nickras           #+#    #+#             */
-/*   Updated: 2022/09/06 18:19:04 by nickras          ###   ########.fr       */
+/*   Updated: 2022/09/07 18:14:15 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,28 @@ void	close_fds_wait_exit(int *fd, int *pipefd, pid_t pid1, pid_t pid2)
 	exit (0);
 }
 
-void	open_is_minus_one(void)
+void	open_is_minus_one(int *fd)
 {
+	close(fd[0]);
+	close(fd[1]);
 	perror("open doesnt work");
 	exit(2);
 }
 
-void	pid_minus_one(pid_t pid)
+void	pipe_is_minus_one(int *fd)
 {
-	if (pid == -1)
-	{
-		ft_printf("fork error\n");
-		exit (2);
-	}
+	close(fd[0]);
+	close(fd[1]);
+	perror("open doesnt work");
+	exit(2);
+}
+
+void	pid_minus_one(int *fd, int *pipefd)
+{
+	close(fd[0]);
+	close(fd[1]);
+	close(pipefd[0]);
+	close(pipefd[1]);
+	ft_printf("fork error\n");
+	exit (2);
 }

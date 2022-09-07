@@ -6,7 +6,7 @@
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 18:05:22 by nickras           #+#    #+#             */
-/*   Updated: 2022/09/07 17:21:38 by nickras          ###   ########.fr       */
+/*   Updated: 2022/09/07 18:04:40 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,22 +53,14 @@ char *arg_idx, char *path)
 		if (access(arg_idx, R_OK) == 0)
 			return (free_stuff_and_return_cmd(path_envp, addon, arg_idx, path));
 		else if (access(path, R_OK) == 0)
-		{
-			// write(2, path, ft_strlen(path));
-			// perror("hi\n");
-			// exit(2);
-			return (free_stuff_and_return(path_envp, addon, arg_idx, path));
-		}
+			return (free_stuff_and_return(path_envp, \
+			addon, arg_idx, path));
 		free(path);
 		path = NULL;
 		j++;
 	}
 	return (NULL);
 }
-
-// write(2, path, ft_strlen(path));
-// 	perror("hi\n");
-// 	exit(2);
 
 char	*set_paths(char *arg_idx, char *envp_index)
 {
