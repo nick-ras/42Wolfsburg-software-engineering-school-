@@ -6,7 +6,7 @@
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 18:04:56 by nickras           #+#    #+#             */
-/*   Updated: 2022/09/08 14:48:42 by nickras          ###   ########.fr       */
+/*   Updated: 2022/09/08 15:07:54 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void	execute(char *cmd, char **envp, char *path)
 		free_list(split_cmd);
 }
 
-
 void	free_list(char **path_envp)
 {
 	int	i;
@@ -61,7 +60,7 @@ int	fd_to_infile(char *argv)
 	int	fd;
 
 	fd = open(argv, O_RDONLY);
-	if (fd < 0 || fd< 0)
+	if (fd < 0 || fd < 0)
 		open_is_minus_one();
 	return (fd);
 }

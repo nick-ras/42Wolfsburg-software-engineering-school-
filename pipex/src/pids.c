@@ -6,7 +6,7 @@
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 18:05:56 by nickras           #+#    #+#             */
-/*   Updated: 2022/09/07 17:00:43 by nickras          ###   ########.fr       */
+/*   Updated: 2022/09/08 15:11:16 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	pid1_is_0(int *fd, int *pipefd, char *cmd, char **envp)
 void	pid2_is_0(int *fd, int *pipefd, char *argv, char **envp)
 {
 	char	*path;
+
 	path = get_path(argv, envp);
 	close(pipefd[WRITE]);
 	close(fd[READ]);
@@ -49,4 +50,36 @@ void	pid2_is_0(int *fd, int *pipefd, char *argv, char **envp)
 	path = get_path(argv, envp);
 	execute(argv, envp, path);
 	ft_printf("second  didnt exec\n");
+}
+
+char	*get_path(char *arg_idx, char **envp)
+{
+	int		i;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strnstr(envp[i], "PATH", ft_strlen(envp[i])))
+			return (set_paths(arg_idx, envp[i]));
+		i++;
+	}
+	perror("could not find path in envp");
+	exit (2);
+}
+
+char	*cmd_get_command(char *arg_idx)
+{
+	int		i;
+	int		len;
+	char	*new_cmd;
+
+	i = 0;
+	while (arg_idx[i] != ' ')
+	{
+		i++;
+		len = i;
+	}
+	new_cmd = malloc(sizeof(char) * len + 1);
+	ft_strlcpy(new_cmd, arg_idx, len + 1);
+	return (new_cmd);
 }

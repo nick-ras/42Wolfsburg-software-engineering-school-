@@ -6,7 +6,7 @@
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 13:20:56 by nickras           #+#    #+#             */
-/*   Updated: 2022/09/08 14:45:56 by nickras          ###   ########.fr       */
+/*   Updated: 2022/09/08 15:12:05 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	free_list(char **path_envp);
 int		main(int argc, char **argv, char **envp);
 int		fd_to_infile(char *argv);
 int		fd_to_outfile(char *argv);
+void	path__is_null_so_free(char **path_envp, char *addon);
 
 //helpers.c
 void	early_errors(int argc, char **envp);
