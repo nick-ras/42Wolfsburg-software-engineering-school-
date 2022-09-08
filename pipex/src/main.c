@@ -6,7 +6,7 @@
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 18:04:56 by nickras           #+#    #+#             */
-/*   Updated: 2022/09/07 17:09:14 by nickras          ###   ########.fr       */
+/*   Updated: 2022/09/08 14:48:42 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,25 @@ void	free_list(char **path_envp)
 	free(path_envp);
 }
 
+int	fd_to_infile(char *argv)
+{
+	int	fd;
+
+	fd = open(argv, O_RDONLY);
+	if (fd < 0 || fd< 0)
+		open_is_minus_one();
+	return (fd);
+}
+
+int	fd_to_outfile(char *argv)
+{
+	int	fd;
+
+	fd = open(argv, O_CREAT | O_RDWR | O_TRUNC, 744);
+	if (fd < 0 || fd < 0)
+		open_is_minus_one();
+	return (fd);
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -63,24 +82,23 @@ int	main(int argc, char **argv, char **envp)
 	pid_t	pid2;
 	int		fd[2];
 	int		pipefd[2];
+	int		status;
 
 	early_errors(argc, envp);
-	fd[READ] = open(argv[1], O_RDONLY);
-	fd[WRITE] = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 744);
-	if (fd[READ] < 0 || fd[WRITE] < 0)
-		open_is_minus_one();
+	fd[READ] = fd_to_infile(argv[1]);
+	fd[WRITE] = fd_to_outfile(argv[4]);
 	if (pipe(pipefd) == -1)
 		return (1);
 	pid1 = fork();
-	pid_minus_one(pid1);
+	if (pid1 < 0)
+		fork_minus_one(pid1);
 	if (pid1 == 0)
 		pid1_is_0(fd, pipefd, argv[2], envp);
 	else
 	{
-		int	status;
 		waitpid(pid1, &status, 0);
 		pid2 = fork();
-		pid_minus_one(pid2);
+		fork_minus_one(pid2);
 		if (pid2 == 0)
 			pid2_is_0(fd, pipefd, argv[3], envp);
 		close_fds_wait_exit(fd, pipefd, pid1, pid2);

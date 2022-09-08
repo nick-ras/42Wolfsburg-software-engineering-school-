@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pipex.h                                         :+:      :+:    :+:   */
+/*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 13:20:56 by nickras           #+#    #+#             */
-/*   Updated: 2022/09/06 18:16:56 by nickras          ###   ########.fr       */
+/*   Updated: 2022/09/08 14:45:56 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,14 @@
 void	execute(char *cmd, char **envp, char *path);
 void	free_list(char **path_envp);
 int		main(int argc, char **argv, char **envp);
+int		fd_to_infile(char *argv);
+int		fd_to_outfile(char *argv);
 
 //helpers.c
 void	early_errors(int argc, char **envp);
 void	close_fds_wait_exit(int *fd, int *pipefd, pid_t pid1, pid_t pid2);
 void	open_is_minus_one(void);
-void	pid_minus_one(pid_t pid);
+void	fork_minus_one(pid_t pid);
 
 //paths.c
 char	*make_path_executable(char **path_envp, char *addon, \

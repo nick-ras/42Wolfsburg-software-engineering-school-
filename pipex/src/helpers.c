@@ -6,7 +6,7 @@
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 18:04:48 by nickras           #+#    #+#             */
-/*   Updated: 2022/09/06 18:19:04 by nickras          ###   ########.fr       */
+/*   Updated: 2022/09/08 14:46:45 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	open_is_minus_one(void)
 	exit(2);
 }
 
-void	pid_minus_one(pid_t pid)
+void	fork_minus_one(pid_t pid)
 {
 	if (pid == -1)
 	{
