@@ -6,7 +6,7 @@ CC = gcc
 # LIBFT_PATH	= ./libft
 # LIBFT_A	= $(LIBFT_PATH)/libft.a
 
-LIBFTPRINTF_PATH	= ../libftprintf
+LIBFTPRINTF_PATH	= ./libftprintf
 LIBFTPRINTF_A	= $(LIBFTPRINTF_PATH)/libftprintf.a
 #libft.a is copied LIBFTinto this archive
 
@@ -51,10 +51,10 @@ clean:
 
 fclean: clean
 	@$(RM) $(NAME)
-	@$(MAKE) fclean -C ../libftprintf
+	@$(MAKE) fclean -C ./libftprintf
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
-	$(MAKE) all -C ../libftprintf
+	$(MAKE) all -C ./libftprintf
 	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) -o $@ -c $^
 #-p will print rules and variable values

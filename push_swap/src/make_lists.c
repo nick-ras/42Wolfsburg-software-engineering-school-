@@ -6,7 +6,7 @@
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 17:44:45 by nickras           #+#    #+#             */
-/*   Updated: 2022/08/25 14:09:44 by nickras          ###   ########.fr       */
+/*   Updated: 2022/09/09 13:33:46 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ t_push	*ft_lstnew_new(char *content, t_push *stack_a, t_count *instr_2)
 	new->len = 1;
 	new->subs = NULL;
 	new->index = -1;
+	if (ft_atoi(content) == 0 || ft_atoi(content) == -1)
+		exit_statement_and_free(stack_a, 1, instr_2);
 	new->num = ft_atoi_push(content, new, instr_2);
 	return (new);
 }
