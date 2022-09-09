@@ -6,7 +6,7 @@
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 18:04:56 by nickras           #+#    #+#             */
-/*   Updated: 2022/09/08 17:30:38 by nickras          ###   ########.fr       */
+/*   Updated: 2022/09/09 13:21:32 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ int	main(int argc, char **argv, char **envp)
 	pid_t	pid2;
 	int		fd[2];
 	int		pipefd[2];
-	int		status;
 
 	early_errors(argc, envp);
 	fd[READ] = fd_to_infile(argv[1]);
