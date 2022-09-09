@@ -1,0 +1,2 @@
+This project read from a file and outputs the next line. I use read to get input from a file. You can set the amount of bytes you want to read at a time.
+I use a static buffer to save the ascii values that came after a newline, so next time you read, it will not add those values.
