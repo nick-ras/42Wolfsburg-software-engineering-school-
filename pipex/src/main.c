@@ -6,7 +6,7 @@
 /*   By: nickras <nickras@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/06 18:04:56 by nickras           #+#    #+#             */
-/*   Updated: 2022/09/08 15:07:54 by nickras          ###   ########.fr       */
+/*   Updated: 2022/09/08 17:30:38 by nickras          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	fd_to_infile(char *argv)
 	int	fd;
 
 	fd = open(argv, O_RDONLY);
-	if (fd < 0 || fd < 0)
+	if (fd < 0)
 		open_is_minus_one();
 	return (fd);
 }
@@ -69,8 +69,8 @@ int	fd_to_outfile(char *argv)
 {
 	int	fd;
 
-	fd = open(argv, O_CREAT | O_RDWR | O_TRUNC, 744);
-	if (fd < 0 || fd < 0)
+	fd = open(argv, O_CREAT | O_RDWR | O_TRUNC, 0744);
+	if (fd < 0)
 		open_is_minus_one();
 	return (fd);
 }
@@ -95,7 +95,6 @@ int	main(int argc, char **argv, char **envp)
 		pid1_is_0(fd, pipefd, argv[2], envp);
 	else
 	{
-		waitpid(pid1, &status, 0);
 		pid2 = fork();
 		fork_minus_one(pid2);
 		if (pid2 == 0)
