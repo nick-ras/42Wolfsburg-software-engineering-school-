@@ -1,0 +1,8 @@
+This project sorts numbers from lowest to highest using only a limited amount of commands. It has two stacks, stack a and stack b. 
+It takes in all the arguments on stack and puts argumenst in a linked lists. It can then only use certain commands to sort the numbers. It can only:
+1. rotate or reverse rotate stack a or b
+2. swap 2 first argument og stack a or b
+3. push top of stack a to be or other way around.
+The project had a limited amount of swaps, and for 500 element it had to (as a maximum) use under 11500 commands. My code averaged around 5800 commands for 500 numbers.
+The code takes care of most invalid cases such as if argument is not a numbers
+It maximum sorts 519 numbers, but can be changes in sourcecode
