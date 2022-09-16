@@ -4,3 +4,9 @@
 [submodule "push_swap/libftprintf"]
 	path = push_swap/libftprintf
 	url = git@github.com:nick-ras/libftprintf.git
+[submodule "libftprintf"]
+	path = libftprintf
+	url = git@github.com:nick-ras/libftprintf.git
+[submodule "Push_swap"]
+	path = Push_swap
+	url = git@github.com:nick-ras/Push_swap.git
