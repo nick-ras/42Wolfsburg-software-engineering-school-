@@ -1,4 +1,4 @@
-#include "/home/nickras/42/so_long/so_long.h"
+#include "../so_long.h"
  
 int main(void)
 {

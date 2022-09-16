@@ -13,8 +13,8 @@
 #ifndef SO_LONG_H
 # define SO_LONG_H
 # include <fcntl.h>
-# include "./libftprintf/ft_printf.h"
-# include "./gnl/get_next_line.h"
+# include "../libftprintf/ft_printf.h"
+# include "../gnl/get_next_line.h"
 # include <mlx.h>
 # include <X11/Xfuncproto.h>
 # include <X11/extensions/shm.h>
