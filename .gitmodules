@@ -10,3 +10,6 @@
 [submodule "Push_swap"]
 	path = Push_swap
 	url = git@github.com:nick-ras/Push_swap.git
+[submodule "Get_Next_Line"]
+	path = Get_Next_Line
+	url = git@github.com:nick-ras/Get_Next_Line.git
