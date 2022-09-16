@@ -13,3 +13,6 @@
 [submodule "Get_Next_Line"]
 	path = Get_Next_Line
 	url = git@github.com:nick-ras/Get_Next_Line.git
+[submodule "pipex/libftprintf"]
+	path = pipex/libftprintf
+	url = git@github.com:nick-ras/libftprintf.git
