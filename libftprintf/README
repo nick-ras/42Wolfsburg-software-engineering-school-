@@ -1,3 +1,0 @@
-This project mimics the printf function from the c library. It has different buffer management and uses write. It takes care of most edge cases.
-Like in printf you can feed it a string and put %s inside and declare placeholders afterwards. It can print numbers, strings, variables, pointers etc.
-It uses recursion to print numbers and pointers (hexadeximal 16).
