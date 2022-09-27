@@ -12,6 +12,7 @@
 
 // gcc -Wextra -Werror main.c ../libftprintf/libftprintf.a && ./a.out ls
 //make re && ./pipex infile "cat -e" "grep 3" outfile
+//bla
 
 #include "../pipex.h"
 
