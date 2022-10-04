@@ -16,3 +16,6 @@
 [submodule "pipex/libftprintf"]
 	path = pipex/libftprintf
 	url = git@github.com:nick-ras/libftprintf.git
+[submodule "pipex"]
+	path = pipex
+	url = git@github.com:nick-ras/pipex.git
