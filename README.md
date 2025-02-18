@@ -2,14 +2,6 @@
 
 This repository contains all the core projects completed as part of the 42 curriculum up until the C++ modules. It covers various topics including C programming, algorithms, data structures, and object-oriented programming in C++. Below is an overview of the projects and how to run them.
 
-## Table of Contents
-- [Projects Overview](#projects-overview)
-- [Setup Instructions](#setup-instructions)
-- [Usage](#usage)
-- [Directory Structure](#directory-structure)
-- [Tests](#tests)
-- [Contributing](#contributing)
-
 ## Projects Overview
 ### C Projects
 
