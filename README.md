@@ -36,3 +36,16 @@ This repository contains all the core projects completed as part of the 42 curri
    git clone https://github.com/your-username/42-core-projects.git
    cd 42-core-projects
 
+## Install Dependencies: 
+For C projects, you may need a C compiler like gcc or clang. For C++ projects, ensure you have a C++ compiler like g++.
+
+For C Projects:
+
+```bash
+sudo apt-get install gcc
+
+```
+For C++ Projects:
+```bash
+sudo apt-get install g++
+```
