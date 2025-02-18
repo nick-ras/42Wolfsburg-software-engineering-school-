@@ -1,0 +1,31 @@
+[submodule "libft"]
+path = libft
+url = git@github.com:nick-ras/libft.git
+
+[submodule "libftprintf"]
+path = libftprintf
+url = git@github.com:nick-ras/libftprintf.git
+
+[submodule "Get_next_line"]
+path = Get_next_line
+url = git@github.com:nick-ras/Get_next_line.git
+
+[submodule "Push-swap_algorithm"]
+path = Push-swap_algorithm
+url = git@github.com:nick-ras/Push-swap_algorithm.git
+
+[submodule "Philophers_threading"]
+path = Philophers_threading
+url = git@github.com:nick-ras/Philophers_threading.git
+
+[submodule "2D-game"]
+path = 2D-game
+url = git@github.com:nick-ras/2D-game.git
+
+[submodule "Bash_clone"]
+path = Bash_clone
+url = git@github.com:nick-ras/Bash_clone.git
+
+[submodule "Cplusplus-modules"]
+path = Cplusplus-modules
+url = git@github.com:nick-ras/Cplusplus-modules.git
